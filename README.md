@@ -18,7 +18,7 @@ To use this class as a middleware, you can use ```->add( new ExampleMiddleware()
 ```php
 $logger = $app['monolog']; // Must be \Monolog\Logger
 
-$subject->add(new \ProEmergotech\Correlate\Psr7\Psr7CorrelateMiddleware($monolog));
+$subject->add(new \ProEmergotech\Correlate\Psr7\Psr7CorrelateMiddleware($logger));
 ```
 
 Passing ```\Monolog\Logger``` is optional.
