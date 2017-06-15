@@ -2,7 +2,7 @@
 
 namespace ProEmergotech\Correlate\Psr7;
 
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Monolog\Logger;
 use ProEmergotech\Correlate\Monolog\CorrelateProcessor;
@@ -33,7 +33,7 @@ class Psr7CorrelateMiddleware
      * @param  callable                                 $next     Next middleware
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(RequestInterface $request, ResponseInterface $response, $next)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         if (!$request->hasHeader(Correlate::getHeaderName())) {
           $request = $request->withHeader(
