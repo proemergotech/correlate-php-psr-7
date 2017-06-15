@@ -4,23 +4,25 @@ namespace ProEmergotech\Correlate\Psr7;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
+use Monolog\Logger;
 use ProEmergotech\Correlate\Monolog\CorrelateProcessor;
 use ProEmergotech\Correlate\Correlate;
 
 class Psr7CorrelateMiddleware
 {
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \Monolog\Logger|null
      */
-    protected $log;
+    protected $log = null;
 
     /**
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      */
-    public function __construct(LoggerInterface $log = null)
+    public function __construct(Logger $log = null)
     {
-        $this->log = $log;
+        if ($log) {
+            $this->log = $log;
+        }
     }
 
     /**
@@ -45,9 +47,11 @@ class Psr7CorrelateMiddleware
 
         $cid = $request->getAttribute(Correlate::getParamName());
 
-        $this->log->pushProcessor(
-          new CorrelateProcessor(Correlate::getParamName(), $cid)
-        );
+        if ($this->log) {
+            $this->log->pushProcessor(
+              new CorrelateProcessor(Correlate::getParamName(), $cid)
+            );
+        }
 
         $response = $next($request, $response);
 
