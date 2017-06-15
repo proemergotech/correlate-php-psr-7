@@ -41,20 +41,20 @@ class Psr7CorrelateMiddleware
           );
         }
 
-        $request = $request->withAttribute(
-          Correlate::getParamName(), $request->getHeader(Correlate::getHeaderName())
-        );
+        $correlationId = $request->getHeader(Correlate::getHeaderName();
 
-        $cid = $request->getAttribute(Correlate::getParamName());
+        $request = $request->withAttribute(
+          Correlate::getParamName(), $correlationId)
+        );
 
         if ($this->log) {
             $this->log->pushProcessor(
-              new CorrelateProcessor(Correlate::getParamName(), $cid)
+              new CorrelateProcessor(Correlate::getParamName(), $correlationId)
             );
         }
 
         $response = $next($request, $response);
 
-        return $response->withHeader(Correlate::getHeaderName(), $cid);
+        return $response->withHeader(Correlate::getHeaderName(), $correlationId);
     }
 }
