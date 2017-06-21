@@ -16,7 +16,7 @@ class Psr7CorrelateMiddleware
     protected $log = null;
 
     /**
-     * @param Logger $logger
+     * @param Logger $log
      */
     public function __construct(Logger $log = null)
     {
@@ -41,7 +41,7 @@ class Psr7CorrelateMiddleware
           );
         }
 
-        $correlationId = $request->getHeader(Correlate::getHeaderName();
+        $correlationId = $request->getHeader(Correlate::getHeaderName());
 
         $request = $request->withAttribute(
           Correlate::getParamName(), $correlationId)
