@@ -44,7 +44,7 @@ class Psr7CorrelateMiddleware
         $correlationId = $request->getHeader(Correlate::getHeaderName());
 
         $request = $request->withAttribute(
-          Correlate::getParamName(), $correlationId)
+          Correlate::getParamName(), $correlationId
         );
 
         if ($this->log) {
