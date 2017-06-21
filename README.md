@@ -41,7 +41,7 @@ Passing ```\Monolog\Logger``` is optional.
 
 ## Usage
 
-This middleware automatically adds correlation id (coming from request header) to every log messages if you provided the optiona ```\Monolog\Logger``` instance to middleware's constructor.
+This middleware automatically adds correlation id (coming from request header) to every log messages if you provided the optional ```\Monolog\Logger``` instance to middleware's constructor.
 
 You can access the correlation id if you want to work with it.
 
