@@ -34,13 +34,13 @@ To use this class as a middleware, you can use ```->add( new ExampleMiddleware()
 ```php
 $logger = $app['monolog']; // Must be \Monolog\Logger
 
-$subject->add(
-  new \ProEmergotech\Correlate\Psr7\Psr7CorrelateMiddleware($logger),
-  function($correlationId) use ($app) { 
-    // This is an optional callback function to set correlation id to a DIC.
+// This is an optional callback function to set correlation id to a DIC.
+$callback = function($correlationId) use ($app) { 
     $app->getContainer()['cid'] = $correlationId;
-  }
-);
+}
+
+$subject->add(new \ProEmergotech\Correlate\Psr7\Psr7CorrelateMiddleware($logger, $callback));
+
 ```
 
 Passing ```\Monolog\Logger``` is optional.
