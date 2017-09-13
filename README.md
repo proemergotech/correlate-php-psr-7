@@ -34,7 +34,13 @@ To use this class as a middleware, you can use ```->add( new ExampleMiddleware()
 ```php
 $logger = $app['monolog']; // Must be \Monolog\Logger
 
-$subject->add(new \ProEmergotech\Correlate\Psr7\Psr7CorrelateMiddleware($logger));
+$subject->add(
+  new \ProEmergotech\Correlate\Psr7\Psr7CorrelateMiddleware($logger),
+  function($correlationId) use ($app) { 
+    // This is an optional callback function to set correlation id to a DIC.
+    $app->getContainer()['cid'] = $correlationId;
+  }
+);
 ```
 
 Passing ```\Monolog\Logger``` is optional.
@@ -43,7 +49,7 @@ Passing ```\Monolog\Logger``` is optional.
 
 This middleware automatically adds correlation id (coming from request header) to every log messages if you provided the optional ```\Monolog\Logger``` instance to middleware's constructor.
 
-You can access the correlation id if you want to work with it.
+You can access the correlation id **IN A ROUTE CONTROLLER** if you want to work with it.
 
 ```php
 $cid = $request->getAttribute(\ProEmergotech\Correlate\Correlate::getParamName());

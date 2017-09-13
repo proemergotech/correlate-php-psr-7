@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Monolog\Logger;
 use ProEmergotech\Correlate\Monolog\CorrelateProcessor;
 use ProEmergotech\Correlate\Correlate;
+use Closure;
 
 class Psr7CorrelateMiddleware
 {
@@ -16,13 +17,41 @@ class Psr7CorrelateMiddleware
     protected $log = null;
 
     /**
-     * @param Logger $log
+     * @var \Closure|null
      */
-    public function __construct(Logger $log = null)
+    protected $callback = null;
+
+    /**
+     * @param Logger $log
+     * @param \Closure $callback
+     */
+    public function __construct(Logger $log = null, Closure $callback = null)
     {
         if ($log) {
             $this->log = $log;
         }
+
+        $this->callback = $callback;
+    }
+
+    /**
+     * @param \Closure $callback
+     * @return $this
+     */
+    public function setCallback(Closure $callback)
+    {
+        $this->callback = $callback;
+        return $this;
+    }
+
+    /**
+     * @param Logger $log
+     * @return $this
+     */
+    public function setLog(Logger $log)
+    {
+        $this->log = $log;
+        return $this;
     }
 
     /**
@@ -55,6 +84,10 @@ class Psr7CorrelateMiddleware
                 $this->log->pushProcessor(
                   new CorrelateProcessor(Correlate::getParamName(), $correlationId)
                 );
+            }
+
+            if ($this->callback) {
+                ($this->callback)($correlationId);
             }
         }
 
